@@ -10,6 +10,7 @@ import Auth from './pages/Auth';
 import Navbar from './components/Navbar';
 import Profile from './pages/Profile';
 import PrivateRoute from './components/PrivateRoute';
+import ProductDetail from './pages/ProductDetail';
 
 function App() {
   return (
@@ -22,6 +23,7 @@ function App() {
         <Route path="/cart" element={<Cart />} />
         {/* Use PrivateRoute to protect the checkout route */}
         <Route path="/checkout" element={<PrivateRoute element={<Checkout />} />} />
+        <Route path="/product/:id" element={<ProductDetail />} />
         <Route path="/order-confirmation" element={<OrderConfirmation />} />
         <Route path="/auth" element={<Auth />} />
       </Routes>

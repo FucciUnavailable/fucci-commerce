@@ -23,5 +23,31 @@ router.post('/', async (req, res) => {
     res.status(400).send(err);
   }
 });
+// Get all unique categories
+router.get('/categories', async (req, res) => {
+  try {
+    const categories = await Product.distinct('category');  // Get unique categories
+    res.json(categories);
+  } catch (err) {
+    res.status(400).send(err);
+  }
+});
+
+// Get product by ID and categories
+// Get product by ID
+router.get('/:id', async (req, res) => {
+  try {
+    const product = await Product.findById(req.params.id);  // Find product by ID
+    if (!product) {
+      return res.status(404).send('Product not found');
+    }
+    res.json(product);  // Send the product as a response
+  } catch (err) {
+    res.status(400).send(err);  // Handle errors
+  }
+});
+
+
+
 
 module.exports = router;
