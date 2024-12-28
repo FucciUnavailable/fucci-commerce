@@ -44,18 +44,17 @@ const Shop = () => {
       <div className="w-64 p-4 bg-gray-100">
         <h2 className="font-semibold text-lg mb-4">Categories</h2>
         <ul>
-  {categories.length > 0 ? categories.map((category, index) => (
-    <li key={category._id || index} className="mb-2">
-      <button
-        className={`w-full text-left p-2 ${selectedCategory === category.name ? 'bg-blue-500 text-white' : ''}`}
-        onClick={() => setSelectedCategory(category.name)}
-      >
-        {category.name}
-      </button>
-    </li>
-  )) : <li>No categories available</li>}
-</ul>
-
+          {categories.length > 0 ? categories.map((category, index) => (
+            <li key={category._id || index} className="mb-2">
+              <button
+                className={`w-full text-left p-2 ${selectedCategory === category.name ? 'bg-blue-500 text-white' : ''}`}
+                onClick={() => setSelectedCategory(category.name)}
+              >
+                {category.name}
+              </button>
+            </li>
+          )) : <li>No categories available</li>}
+        </ul>
       </div>
 
       {/* Product List Section */}
@@ -78,6 +77,12 @@ const Shop = () => {
               >
                 Add to Cart
               </button>
+              {/* Added Buy button */}
+              <Link to="/cart">
+                <button className="bg-green-500 text-white px-4 py-2 rounded mt-4"  onClick={() => handleAddToCart(product)}>
+                  Buy Now
+                </button>
+              </Link>
             </div>
           )) : <div>No products available</div>}
         </div>

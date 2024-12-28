@@ -1,9 +1,9 @@
-// frontend/src/pages/Checkout.js
 import React, { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';  // useNavigate for page redirection
 import { clearCart } from '../redux/actions/cartActions';
 import axios from 'axios';
+import PayPalButton from '../components/PaypalButton.js';  // Import the PayPal button component
 
 const Checkout = () => {
   const cart = useSelector((state) => state.cart.cart);
@@ -47,20 +47,17 @@ const Checkout = () => {
       total: getTotal(),
       user: userId, // User's ID
     };
-    console.log(":orderData",orderData)
 
     try {
       const response = await axios.post('http://localhost:5000/api/orders', orderData, {
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': `Bearer ${localStorage.getItem('token')}`,  // Assuming token is saved in localStorage
+          'Authorization': `Bearer ${localStorage.getItem('token')}`,
         },
       });
-      console.log("response from server",response);  // Log the response to see the full data
-
 
       if (response.status === 201) {
-        dispatch(clearCart());
+        // After the shipping info is saved, show the PayPal button
         navigate('/order-confirmation', { state: { orderId: response.data.data.orderId } });
       } else {
         alert('Error placing order');
@@ -73,6 +70,12 @@ const Checkout = () => {
 
   const getTotal = () => {
     return cart.reduce((acc, product) => acc + product.price * product.quantity, 0).toFixed(2);
+  };
+
+  // Handle PayPal payment success
+  const handlePaymentSuccess = () => {
+    dispatch(clearCart());
+    navigate('/order-confirmation');
   };
 
   return (
@@ -138,6 +141,7 @@ const Checkout = () => {
           required
         />
         <button type="submit" className="btn btn-primary mt-4">Complete Purchase</button>
+        <PayPalButton totalPrice={getTotal()} onPaymentSuccess={handlePaymentSuccess} />
       </form>
     </div>
   );
