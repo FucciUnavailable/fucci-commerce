@@ -16,7 +16,7 @@ app.use(express.json()); // For parsing JSON request bodies
 app.use('/api/auth', authRoutes);
 app.use('/api/products', productRoutes);
 app.use('/api/orders', orderRoutes);
-app.use('/api/update-shipping', userRoutes);  // Add user routes with /api/users prefix
+app.use('/api/user/updateAddress', userRoutes);  // Add user routes with /api/users prefix
 app.use
 // MongoDB connection
 mongoose.connect(process.env.DB_URI, { useNewUrlParser: true, useUnifiedTopology: true })

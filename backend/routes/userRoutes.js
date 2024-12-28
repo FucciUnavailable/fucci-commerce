@@ -3,7 +3,7 @@ const User = require('../models/User');
 const router = express.Router();
 
 // Update shipping information
-router.put('/update-shipping', async (req, res) => {
+router.put('/updateAddress', async (req, res) => {
   const { userId, shipping } = req.body; // expect userId and shipping info in the body
 
   try {
