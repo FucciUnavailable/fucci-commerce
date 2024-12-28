@@ -18,9 +18,9 @@ const registerUser = async (req, res) => {
     const newUser = new User({ name, email, password: hashedPassword });
 
     await newUser.save();
-    const token = jwt.sign({ userId: newUser._id }, 'your_jwt_secret', { expiresIn: '1h' });
+    const token = jwt.sign({ userId: newUser._id, name: newUser.name  }, 'your_jwt_secret', { expiresIn: '1h' });
 
-    res.status(201).json({ token, userId: newUser._id });
+    res.status(201).json({ token, userId: newUser._id, name: newUser.name });
   } catch (error) {
     res.status(500).json({ message: 'Server error' });
   }
@@ -40,8 +40,8 @@ const loginUser = async (req, res) => {
       return res.status(400).json({ message: 'Invalid credentials' });
     }
 
-    const token = jwt.sign({ userId: user._id }, 'your_jwt_secret', { expiresIn: '1h' });
-    res.json({ token, userId: user._id });
+    const token = jwt.sign({ userId: user._id, name: user.name }, 'your_jwt_secret', { expiresIn: '1h' });
+    res.json({ token, userId: user._id, name: user.name });
   } catch (error) {
     res.status(500).json({ message: 'Server error' });
   }
