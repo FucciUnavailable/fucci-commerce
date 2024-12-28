@@ -7,15 +7,18 @@ import Cart from './pages/Cart';
 import Checkout from './pages/Checkout';
 import OrderConfirmation from './pages/OrderConfirmation';
 import Auth from './pages/Auth';
-
+import Navbar from './components/Navbar';
+import Profile from './pages/Profile';
 import PrivateRoute from './components/PrivateRoute';
 
 function App() {
   return (
     <Router>
+       <Navbar />
       <Routes>
-        <Route path="/" element={<Home />} />
+        <Route path="/home" element={<Home />} />
         <Route path="/shop" element={<Shop />} />
+        <Route path="/profile" element={<Profile />} />
         <Route path="/cart" element={<Cart />} />
         {/* Use PrivateRoute to protect the checkout route */}
         <Route path="/checkout" element={<PrivateRoute element={<Checkout />} />} />
