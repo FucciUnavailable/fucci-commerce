@@ -4,7 +4,6 @@ import { Link } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext'; // Import the AuthContext to check user state
 const Home = () => {
   const { user } = useAuth() || {}; // Safely access `user` from context
-  console.log(user)
   return (
     <div className="home">
       <header className="hero bg-blue-500 text-white p-12 text-center">

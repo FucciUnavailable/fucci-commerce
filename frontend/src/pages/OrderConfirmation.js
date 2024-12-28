@@ -1,25 +1,51 @@
 // frontend/src/pages/OrderConfirmation.js
-import React, { useEffect } from 'react';
-import { Link } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
-import { clearCart } from '../redux/actions/cartActions';
+import React, { useEffect, useState } from 'react';
+import { useLocation } from 'react-router-dom';
 
 const OrderConfirmation = () => {
-  const dispatch = useDispatch();
+  const [order, setOrder] = useState(null);
+  const location = useLocation();
 
   useEffect(() => {
-    // Clear the cart when the order confirmation page is loaded
-    dispatch(clearCart());
-  }, [dispatch]);
+    const orderId = location.state?.orderId;
 
-  const orderId = "12345"; // Replace with the actual order ID
+    if (orderId) {
+      fetch(`/api/orders/${orderId}`, {
+        headers: {
+          'Authorization': `Bearer ${localStorage.getItem('token')}`,
+        },
+      })
+        .then((res) => res.json())
+        .then((data) => setOrder(data.orderDetails))
+        .catch((error) => console.error('Error fetching order:', error));
+    }
+  }, [location.state]);
+
+  if (!order) {
+    return <div>Loading...</div>;
+  }
 
   return (
     <div className="order-confirmation">
-      <h1 className="text-3xl font-semibold mb-6">Thank you for your order!</h1>
-      <p>Your order has been successfully placed. Your order number is <strong>{orderId}</strong>.</p>
-      <p>We will send a confirmation email shortly with the details of your order.</p>
-      <Link to="/" className="btn btn-primary mt-4">Back to Shop</Link>
+      <h1>Order Confirmation</h1>
+      <h2>Order ID: {order._id}</h2>
+      <h3>Shipping Information:</h3>
+      <p>{order.shippingDetails.name}</p>
+      <p>{order.shippingDetails.address}</p>
+      <p>{order.shippingDetails.city}, {order.shippingDetails.postalCode}</p>
+      <p>{order.shippingDetails.country}</p>
+
+      <h3>Order Items:</h3>
+      <ul>
+        {order.cart.map((item) => (
+          <li key={item.productId}>
+            <img src={item.image} alt={item.name} width={50} />
+            {item.name} - ${item.price} x {item.quantity}
+          </li>
+        ))}
+      </ul>
+
+      <h3>Total: ${order.total}</h3>
     </div>
   );
 };

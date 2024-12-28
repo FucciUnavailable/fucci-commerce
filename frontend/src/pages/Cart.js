@@ -2,11 +2,15 @@ import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';  // Import useNavigate
 import { removeFromCart, updateQuantity } from '../redux/actions/cartActions';
+import { useAuth } from '../context/AuthContext';  // Import the AuthContext to check user authentication
+
 
 const Cart = () => {
   const cart = useSelector((state) => state.cart.cart);
   const dispatch = useDispatch();
   const navigate = useNavigate();  // Initialize useNavigate
+  const { user } = useAuth();  // Get user from AuthContext
+
 
   const handleRemove = (productId) => {
     dispatch(removeFromCart(productId));
@@ -28,7 +32,11 @@ const Cart = () => {
   };
 
   const handleProceedToCheckout = () => {
-    navigate('/checkout');  // Navigate to the checkout page
+    if (!user) {  // Check if the user is logged in
+      navigate('/auth');  // Redirect to login page if not logged in
+    } else {
+      navigate('/checkout');  // Proceed to checkout if logged in
+    }
   };
 
   return (

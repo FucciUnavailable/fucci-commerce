@@ -1,13 +1,13 @@
 // frontend/src/pages/Checkout.js
 import React, { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { useNavigate } from 'react-router-dom';  // Change from useHistory to useNavigate
+import { useNavigate } from 'react-router-dom';  // useNavigate for page redirection
 import { clearCart } from '../redux/actions/cartActions';
 
 const Checkout = () => {
   const cart = useSelector((state) => state.cart.cart);
   const dispatch = useDispatch();
-  const navigate = useNavigate();  // useNavigate hook for navigation
+  const navigate = useNavigate();
 
   // Shipping details state
   const [shippingDetails, setShippingDetails] = useState({
@@ -26,14 +26,38 @@ const Checkout = () => {
     });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // Here you can handle the order submission logic like sending data to the server
+    const orderData = {
+      cart,
+      shippingDetails,
+      total: getTotal(),
+      userId: "userIdHere", // This should be the logged-in user's ID
+    };
 
-    // After successful order, clear the cart and navigate to the order confirmation page
-    dispatch(clearCart());
-    navigate('/order-confirmation');  // Navigate to the order confirmation page
+    try {
+      const response = await fetch('http://127.0.0.1:3000/api/orders', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${localStorage.getItem('token')}`,  // Assuming token is saved in localStorage
+        },
+        body: JSON.stringify(orderData),
+      });
+
+      const data = await response.json();
+
+      if (response.ok) {
+        dispatch(clearCart());
+        navigate('/OrderConfirmation', { state: { orderId: data.orderId } });
+      } else {
+        alert('Error placing order');
+      }
+    } catch (error) {
+      console.error('Error:', error);
+      alert('Error placing order');
+    }
   };
 
   const getTotal = () => {
@@ -43,7 +67,7 @@ const Checkout = () => {
   return (
     <div className="checkout">
       <h1 className="text-3xl font-semibold mb-6">Checkout</h1>
-      
+
       <div className="cart-summary">
         <h2>Your Cart</h2>
         <ul>

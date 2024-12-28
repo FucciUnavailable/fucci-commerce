@@ -1,24 +1,27 @@
-// backend/models/Order.js
+// models/Order.js
 const mongoose = require('mongoose');
 
 const orderSchema = new mongoose.Schema({
-  products: [
+  userId: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
+  cart: [
     {
+      productId: { type: mongoose.Schema.Types.ObjectId, ref: 'Product', required: true },
       name: String,
       price: Number,
       quantity: Number,
       image: String,
     },
   ],
-  totalPrice: Number,
-  userId: String,
-  status: {
-    type: String,
-    default: 'Pending',
+  shippingDetails: {
+    name: String,
+    address: String,
+    city: String,
+    postalCode: String,
+    country: String,
   },
+  total: { type: Number, required: true },
   createdAt: { type: Date, default: Date.now },
 });
 
 const Order = mongoose.model('Order', orderSchema);
-
 module.exports = Order;

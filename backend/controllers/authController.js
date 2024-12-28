@@ -46,5 +46,25 @@ const loginUser = async (req, res) => {
     res.status(500).json({ message: 'Server error' });
   }
 };
+// Verify Token
+const verifyToken = async (req, res) => {
+  const token = req.headers.authorization && req.headers.authorization.split(' ')[1];  // Extract token from Authorization header
 
-module.exports = { registerUser, loginUser };
+  if (!token) {
+    return res.status(401).json({ message: 'No token provided' });
+  }
+
+  try {
+    const decoded = jwt.verify(token, 'your_jwt_secret');  // Verify token
+    const user = await User.findById(decoded.userId);  // Find the user by ID from the token
+
+    if (!user) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+
+    res.json({ userId: user._id, name: user.name });  // Return user data
+  } catch (error) {
+    return res.status(401).json({ message: 'Invalid or expired token' });
+  }
+};
+module.exports = { registerUser, loginUser, verifyToken };
