@@ -1,14 +1,23 @@
-// routes/orderRoutes.js
 const express = require('express');
 const Order = require('../models/Order');
-const authMiddleware = require('../middleware/authMiddleware'); // Authentication middleware
-
+const authMiddleware = require('../middleware/authMiddleware');
 const router = express.Router();
+const {getOrdersByUser} = require('../controllers/orderController')
 
-// POST /api/orders - Create a new order
+// // POST /api/orders - Create a new order
 router.post('/', authMiddleware, async (req, res) => {
   const { cart, shippingDetails, total } = req.body;
-  const userId = req.user.id; // Use userId from the decoded token
+  const userId = req.user.userId;  // Accessing the userId from the decoded JWT
+
+  if (!cart || !shippingDetails || !total) {
+    return res.status(400).json({ message: 'Missing required fields' });
+  }
+
+  // Ensure each item in the cart has a productId
+  const validCart = cart.every(item => item.productId);
+  if (!validCart) {
+    return res.status(400).json({ message: 'Each item in the cart must have a productId' });
+  }
 
   try {
     const order = new Order({
@@ -17,18 +26,23 @@ router.post('/', authMiddleware, async (req, res) => {
       shippingDetails,
       total,
     });
+    console.log(":order backend",order)
 
     await order.save();
     res.status(201).json({
+      success: true,
       message: 'Order placed successfully',
-      orderId: order._id,
-      orderDetails: order,
+      data: {
+        orderId: order._id,
+        orderDetails: order,
+      },
     });
   } catch (error) {
-    console.error(error);
-    res.status(500).json({ message: 'Server error, please try again later' });
+    console.error('Order creation error:', error);
+    res.status(500).json({ success: false, message: 'Server error, please try again later' });
   }
 });
+
 
 // GET /api/orders/:id - Get order details
 router.get('/:id', authMiddleware, async (req, res) => {
@@ -37,11 +51,24 @@ router.get('/:id', authMiddleware, async (req, res) => {
     if (!order) {
       return res.status(404).json({ message: 'Order not found' });
     }
-    res.json({ orderDetails: order });
+
+    if (order.userId.toString() !== req.user.userId) {
+      return res.status(403).json({ message: 'Unauthorized access to this order' });
+    }
+
+    res.json({
+      success: true,
+      data: {
+        orderDetails: order,
+      },
+    });
   } catch (error) {
-    console.error(error);
-    res.status(500).json({ message: 'Server error, please try again later' });
+    console.error('Order retrieval error:', error);
+    res.status(500).json({ success: false, message: 'Server error, please try again later' });
   }
 });
 
+
+// GET /api/orders/history/:id - Get order details
+router.get('/history/:id', authMiddleware, getOrdersByUser);
 module.exports = router;

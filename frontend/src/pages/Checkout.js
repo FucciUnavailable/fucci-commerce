@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';  // useNavigate for page redirection
 import { clearCart } from '../redux/actions/cartActions';
+import axios from 'axios';
 
 const Checkout = () => {
   const cart = useSelector((state) => state.cart.cart);
@@ -26,31 +27,41 @@ const Checkout = () => {
     });
   };
 
+  const userId = localStorage.getItem('userId');
+
+  // Mapped cart for better data structure to send to backend
+  const mappedCart = cart.map(item => ({
+    productId: item._id,
+    name: item.name,
+    price: item.price,
+    quantity: item.quantity,
+    image: item.image,
+  }));
+
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     const orderData = {
-      cart,
+      cart: mappedCart,
       shippingDetails,
       total: getTotal(),
-      userId: "userIdHere", // This should be the logged-in user's ID
+      user: userId, // User's ID
     };
+    console.log(":orderData",orderData)
 
     try {
-      const response = await fetch('http://127.0.0.1:3000/api/orders', {
-        method: 'POST',
+      const response = await axios.post('http://localhost:5000/api/orders', orderData, {
         headers: {
           'Content-Type': 'application/json',
           'Authorization': `Bearer ${localStorage.getItem('token')}`,  // Assuming token is saved in localStorage
         },
-        body: JSON.stringify(orderData),
       });
+      console.log("response from server",response);  // Log the response to see the full data
 
-      const data = await response.json();
 
-      if (response.ok) {
+      if (response.status === 201) {
         dispatch(clearCart());
-        navigate('/OrderConfirmation', { state: { orderId: data.orderId } });
+        navigate('/order-confirmation', { state: { orderId: response.data.data.orderId } });
       } else {
         alert('Error placing order');
       }
