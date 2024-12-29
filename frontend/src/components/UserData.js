@@ -15,6 +15,7 @@ const UserData = () => {
             'Authorization': `Bearer ${localStorage.getItem('token')}`,
           },
         });
+        console.log("response",response.data)
         setUserData(response.data);  // Save fetched user data
         setLoading(false);            // Set loading to false
       } catch (error) {
@@ -39,13 +40,14 @@ const UserData = () => {
   return (
     <div>
       <h2>User Information</h2>
-      <p><strong>Name:</strong> {userData?.name}</p>
-      <p><strong>Email:</strong> {userData?.email}</p>
-      <p><strong>Shipping Address:</strong> {userData?.shipping?.address}</p>
-      <p><strong>City:</strong> {userData?.shipping?.city}</p>
-      <p><strong>State:</strong> {userData?.shipping?.state}</p>
-      <p><strong>Postal Code:</strong> {userData?.shipping?.postalCode}</p>
-      <p><strong>Country:</strong> {userData?.shipping?.country}</p>
+      <p><strong>Name:</strong> {userData?.fullName}</p>
+      <p><strong>Phone:</strong> {userData?.phone}</p>
+
+      <p><strong>Shipping Address:</strong> {userData?.address}</p>
+      <p><strong>City:</strong> {userData?.city}</p>
+      <p><strong>State:</strong> {userData?.state}</p>
+      <p><strong>Postal Code:</strong> {userData?.postalCode}</p>
+      <p><strong>Country:</strong> {userData?.country}</p>
     </div>
   );
 };

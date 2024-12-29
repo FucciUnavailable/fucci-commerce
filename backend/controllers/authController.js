@@ -19,11 +19,6 @@ const registerUser = async (req, res) => {
 
     await newUser.save();
 
-    // Step 2: Create the UserInformation document and associate it with the user
-    const userInformation = new UserInformation({
-      user: user._id, // Reference to the User
-    });
-    await userInformation.save();
     const token = jwt.sign(
       { userId: newUser._id, name: newUser.name },
       "your_jwt_secret",
