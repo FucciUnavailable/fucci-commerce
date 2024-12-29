@@ -3,7 +3,6 @@ import { useSelector, useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { clearCart } from '../redux/actions/cartActions';
 import axios from 'axios';
-import PayPalButton from '../components/PaypalButton.js';
 
 const Checkout = () => {
   const cart = useSelector((state) => state.cart.cart);
@@ -12,9 +11,11 @@ const Checkout = () => {
 
   // Shipping details state
   const [shippingDetails, setShippingDetails] = useState({
-    name: '',
+    fullName: '',
+    phone: '',
     address: '',
     city: '',
+    state: '',
     postalCode: '',
     country: '',
   });
@@ -61,7 +62,9 @@ const Checkout = () => {
 
       if (response.status === 201) {
         // After the shipping info is saved, show the PayPal button
+        
         navigate('/order-confirmation', { state: { orderId: response.data.data.orderId } });
+        dispatch(clearCart()) // Clear the cart
       } else {
         alert('Error placing order');
       }
@@ -71,18 +74,11 @@ const Checkout = () => {
     }
   };
 
-  // Handle PayPal payment success
-  const handlePaymentSuccess = () => {
-    dispatch(clearCart());
-    navigate('/order-confirmation');
-  };
-
-  // Handle shipping information save
   const handleSaveShipping = async () => {
     try {
       const response = await axios.post(
-        'http://localhost:5000/api/user/updateAddress',
-        { shippingDetails },
+        'http://localhost:5000/api/user/updateAddress', 
+        { shippingDetails, userId },
         {
           headers: {
             'Authorization': `Bearer ${localStorage.getItem('token')}`,
@@ -90,8 +86,8 @@ const Checkout = () => {
         }
       );
 
-      if (response.status === 200) {
-        setModalVisible(true); // Show success modal
+      if (response.status === 200 || response.status === 201) {
+        setModalVisible(true); // Show success modal with message
       } else {
         alert('Failed to update shipping information');
       }
@@ -129,9 +125,17 @@ const Checkout = () => {
       <form onSubmit={handleSubmit}>
         <input
           type="text"
-          name="name"
+          name="fullName"
           placeholder="Full Name"
-          value={shippingDetails.name}
+          value={shippingDetails.fullName}
+          onChange={handleInputChange}
+          required
+        />
+        <input
+          type="text"
+          name="phone"
+          placeholder="Phone Number"
+          value={shippingDetails.phone}
           onChange={handleInputChange}
           required
         />
@@ -148,6 +152,14 @@ const Checkout = () => {
           name="city"
           placeholder="City"
           value={shippingDetails.city}
+          onChange={handleInputChange}
+          required
+        />
+        <input
+          type="text"
+          name="state"
+          placeholder="State"
+          value={shippingDetails.state}
           onChange={handleInputChange}
           required
         />
@@ -186,7 +198,6 @@ const Checkout = () => {
         )}
 
         <button type="submit" className="btn btn-primary mt-4">Complete Purchase</button>
-        <PayPalButton totalPrice={getTotal()} onPaymentSuccess={handlePaymentSuccess} />
       </form>
     </div>
   );

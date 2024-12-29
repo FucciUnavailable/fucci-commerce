@@ -196,3 +196,29 @@ button {
 .modal-content {
   text-align: center;
 }
+
+/* Custom input and button styles */
+.input-field {
+  padding: 12px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  width: 100%;
+  transition: border-color 0.3s;
+}
+
+.input-field:focus {
+  border-color: #4CAF50; /* Green for focus */
+  outline: none;
+}
+
+.btn-primary {
+  background-color: #4CAF50;
+  color: white;
+  border-radius: 8px;
+  transition: background-color 0.3s;
+}
+
+.btn-primary:hover {
+  background-color: #45a049; /* Darker green on hover */
+}
+

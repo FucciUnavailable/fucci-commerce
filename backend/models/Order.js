@@ -19,9 +19,11 @@ const orderSchema = new mongoose.Schema({
     quantity: Number,
   }],
   shippingDetails: {
-    name: String,
+    fullName: String,
+    phone: String,
     address: String,
     city: String,
+    state: String,
     postalCode: String,
     country: String,
   },

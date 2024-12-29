@@ -8,7 +8,6 @@ const userRoutes = require('./routes/userRoutes');
 const orderRoutes = require('./routes/orderRoutes');
 const app = express();
 const port = process.env.PORT || 5000;
-const user = 
 
 // Middleware
 app.use(cors());
@@ -16,7 +15,7 @@ app.use(express.json()); // For parsing JSON request bodies
 app.use('/api/auth', authRoutes);
 app.use('/api/products', productRoutes);
 app.use('/api/orders', orderRoutes);
-app.use('/api/user/updateAddress', userRoutes);  // Add user routes with /api/users prefix
+app.use('/api/user', userRoutes);  // user update and handling route
 app.use
 // MongoDB connection
 mongoose.connect(process.env.DB_URI, { useNewUrlParser: true, useUnifiedTopology: true })
