@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { useAuth } from '../context/AuthContext';
 import axios from 'axios';
+import UserData from '../components/UserData';
+
 
 const Profile = () => {
   const { user } = useAuth();
@@ -23,41 +25,58 @@ const Profile = () => {
         });
     }
   }, [showHistory, user]);
-
+ 
+    const [showUserData, setShowUserData] = useState(false);
+  
+    const toggleUserData = () => {
+      setShowUserData(!showUserData);
+    };
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
   };
+  const handleProfileEdit = async()=>{}
+  // const handleProfileEdit= async () => {
+  //   try {
+  //     const response = await axios.post(
+  //       'http://localhost:5000/api/user/updateAddress', 
+  //       { shippingDetails, userId },
+  //       {
+  //         headers: {
+  //           'Authorization': `Bearer ${localStorage.getItem('token')}`,
+  //         },
+  //       }
+  //     );
 
-  const handleProfileEdit = (e) => {
-    e.preventDefault();
-    axios
-      .put(
-        'http://localhost:5000/api/users/update',
-        { name: formData.name, email: formData.email },
-        {
-          headers: { Authorization: `Bearer ${localStorage.getItem('token')}` },
-        }
-      )
-      .then((res) => {
-        setEditMode(false);
-        alert('Profile updated successfully');
-      })
-      .catch((err) => {
-        console.error('Error updating profile:', err);
-        alert('Failed to update profile');
-      });
-  };
+  //     if (response.status === 200 || response.status === 201) {
+  //       setModalVisible(true); // Show success modal with message
+  //     } else {
+  //       alert('Failed to update shipping information');
+  //     }
+  //   } catch (error) {
+  //     console.error('Error saving shipping information:', error);
+  //     alert('Failed to update shipping information');
+  //   }
+  // };
 
   const viewOrderDetails = (orderId) => {
     // Navigate to a detailed order page or show a modal with the order details
     console.log(`View details for order: ${orderId}`);
   };
-
+  //user data
+  
   return (
     <div className="profile-page">
       <h1>Welcome, {user ? user.name : 'Loading...'}</h1>
+      <div>
+      <h1>Dashboard</h1>
 
+      <button onClick={toggleUserData}>
+        {showUserData ? 'Hide User Data' : 'Show User Data'}
+      </button>
+
+      {showUserData && <UserData />}  {/* Conditionally render the UserData component */}
+    </div>
 
       {/* Profile Edit Section */}
       <div className="profile-edit">
@@ -161,6 +180,7 @@ const Profile = () => {
         </div>
       </div>
     </div>
+
   );
 };
 
