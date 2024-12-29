@@ -29,9 +29,10 @@ router.post('/updateAddress', authMiddleware, async (req, res) => {
 router.get('/getUserData', authMiddleware, async (req, res) => {
 
   const userId = req.user.userId; // Assuming user authentication middleware
-
+  
   try {
     const user = await User.findById(userId);
+    console.log(user)
     if (!user) {
       return res.status(404).json({ message: 'User not found' });
     }

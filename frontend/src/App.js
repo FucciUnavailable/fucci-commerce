@@ -11,6 +11,7 @@ import Navbar from './components/Navbar';
 import Profile from './pages/Profile';
 import PrivateRoute from './components/PrivateRoute';
 import ProductDetail from './pages/ProductDetail';
+import Admin from './pages/Admin';
 
 function App() {
   return (
@@ -26,6 +27,7 @@ function App() {
         <Route path="/product/:id" element={<ProductDetail />} />
         <Route path="/order-confirmation" element={<OrderConfirmation />} />
         <Route path="/auth" element={<Auth />} />
+        <Route path="/adminPage" element={<Admin />} />
       </Routes>
     </Router>
   );

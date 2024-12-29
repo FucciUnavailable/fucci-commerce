@@ -1,7 +1,6 @@
 // backend/controllers/authController.js
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
-const UserInformation = require("../models/UserInformation");
 const User = require("../models/User");
 
 // Register new user
@@ -46,7 +45,7 @@ const loginUser = async (req, res) => {
     }
 
     const token = jwt.sign(
-      { userId: user._id, name: user.name },
+      { userId: user._id, name: user.name, isAdmin: user.isAdmin },
       "your_jwt_secret",
       { expiresIn: "1h" }
     );
@@ -72,9 +71,11 @@ const verifyToken = async (req, res) => {
       return res.status(404).json({ message: "User not found" });
     }
 
-    res.json({ userId: user._id, name: user.name }); // Return user data
+    res.json({ userId: user._id, name: user.name, isAdmin: user.isAdmin }); // Return user data
   } catch (error) {
     return res.status(401).json({ message: "Invalid or expired token" });
   }
 };
+
+
 module.exports = { registerUser, loginUser, verifyToken };

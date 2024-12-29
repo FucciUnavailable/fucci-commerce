@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { fetchProducts } from '../services/ProductService';
-import { useHistory } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
 
 
 
 const Admin = () => {
-  const history = useHistory();
+  const history = useNavigate();
   
   const [products, setProducts] = useState([]);
   useEffect(() => {

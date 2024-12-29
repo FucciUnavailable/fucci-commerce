@@ -10,7 +10,6 @@ const Profile = () => {
   const [formData, setFormData] = useState({ name: '', email: '' });
   const [editMode, setEditMode] = useState(false);
   const [showHistory, setShowHistory] = useState(false); // State to control showing order history
-  console.log(showHistory && user && user.id)
   useEffect(() => {
     if (user) {
       axios

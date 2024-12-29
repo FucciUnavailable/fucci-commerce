@@ -31,11 +31,11 @@ export const AuthProvider = ({ children }) => {
 
   const login = async (email, password) => {
     const response = await axios.post('http://localhost:5000/api/auth/login', { email, password });
-    const { token, userId, name } = response.data;
+    const { token, userId, name, isAdmin } = response.data;
     localStorage.setItem('token', token);  // Save token in localStorage
     localStorage.setItem('userId', userId);  // Save token in localStorage
 
-    setUser({ userId, token, name });
+    setUser({ userId, token, name, isAdmin });
   };
 
   const register = async (name, email, password) => {
@@ -47,6 +47,8 @@ export const AuthProvider = ({ children }) => {
 
   const logout = () => {
     localStorage.removeItem('token');
+    localStorage.removeItem('userId');
+
     setUser(null);
   };
 
