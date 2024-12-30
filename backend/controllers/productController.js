@@ -10,10 +10,10 @@ const getProducts = async (req, res) => {
 };
 
 const addProduct = async (req, res) => {
-    const { name, price, description, image } = req.body;
+    const { name, price, description, image, category, stock } = req.body;
 
     try {
-        const product = new Product({ name, price, description, image });
+        const product = new Product({ name, price, description, image,  category, stock });
         await product.save();
         res.status(201).json(product);
     } catch (error) {

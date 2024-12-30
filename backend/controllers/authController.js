@@ -49,7 +49,7 @@ const loginUser = async (req, res) => {
       "your_jwt_secret",
       { expiresIn: "1h" }
     );
-    res.json({ token, userId: user._id, name: user.name });
+    res.json({ token, userId: user._id, name: user.name , isAdmin: user.isAdmin });
   } catch (error) {
     res.status(500).json({ message: "Server error" });
   }

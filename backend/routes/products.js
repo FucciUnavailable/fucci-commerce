@@ -1,6 +1,7 @@
 const express = require('express');
 const Product = require('../models/Product');
 const router = express.Router();
+const isAdmin = require('../middleware/isAdmin');
 
 // Get all products
 router.get('/', async (req, res) => {
@@ -13,10 +14,10 @@ router.get('/', async (req, res) => {
 });
 
 // Add new product (Admin)
-router.post('/', async (req, res) => {
-  const { name, price, description, imageUrl } = req.body;
+router.post('/', isAdmin, async (req, res) => {
+  const { name, price, description, imageUrl, category, stock } = req.body;
   try {
-    const newProduct = new Product({ name, price, description, imageUrl });
+    const newProduct = new Product({ name, price, description, imageUrl, category, stock });
     await newProduct.save();
     res.status(201).json(newProduct);
   } catch (err) {

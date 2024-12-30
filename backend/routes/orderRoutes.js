@@ -1,9 +1,22 @@
+// from server file: app.use('/api/orders', orderRoutes);
+
 const express = require('express');
 const Order = require('../models/Order');
 const authMiddleware = require('../middleware/authMiddleware');
 const router = express.Router();
 const {getOrdersByUser} = require('../controllers/orderController')
+const isAdmin = require('../middleware/isAdmin');
 
+
+// Fetch all orders TEST FOR ADMIN MIDDLEWARE
+router.get('/', isAdmin, async (req, res) => {
+  try {
+    const orders = await Order.find().populate('cart.productId');
+    res.status(200).json(orders);
+  } catch (error) {
+    res.status(500).json({ error: 'Failed to fetch orders' });
+  }
+});
 // // POST /api/orders - Create a new order
 router.post('/', authMiddleware, async (req, res) => {
   const { cart, shippingDetails, total } = req.body;
