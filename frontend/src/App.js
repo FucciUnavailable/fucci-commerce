@@ -12,6 +12,7 @@ import Profile from './pages/Profile';
 import PrivateRoute from './components/PrivateRoute';
 import ProductDetail from './pages/ProductDetail';
 import Admin from './pages/Admin';
+import EditProduct from './components/admin/EditProduct';
 
 function App() {
   return (
@@ -27,7 +28,8 @@ function App() {
         <Route path="/product/:id" element={<ProductDetail />} />
         <Route path="/order-confirmation" element={<OrderConfirmation />} />
         <Route path="/auth" element={<Auth />} />
-        <Route path="/adminPage" element={<Admin />} />
+        <Route path="/admin" element={<Admin />} />
+        <Route path="/edit-product/:id" element={<EditProduct />} />
       </Routes>
     </Router>
   );

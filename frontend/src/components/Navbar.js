@@ -76,6 +76,7 @@ const Navbar = () => {
           <li><Link to="/admin">Admin Dashboard</Link></li>
         )}
       {/* Cart Icon */}
+     
       <div className="relative">
         <button
           onClick={toggleCart}

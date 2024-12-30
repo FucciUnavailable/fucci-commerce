@@ -10,11 +10,8 @@ export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   
   useEffect(() => {
-    // Check if token is stored in localStorage and automatically log in the user
     const token = localStorage.getItem('token');
     if (token) {
-      console.log('Token from localStorage:', token);
-
       axios.get('http://localhost:5000/api/auth/verify-token', {
         headers: { Authorization: `Bearer ${token}` },
       })
@@ -22,7 +19,6 @@ export const AuthProvider = ({ children }) => {
         setUser({ ...response.data, token });
       })
       .catch((err) => {
-        // Handle token verification failure (e.g., token expired)
         console.error('Error verifying token:', err);
         localStorage.removeItem('token');
       });
@@ -30,25 +26,37 @@ export const AuthProvider = ({ children }) => {
   }, []);
 
   const login = async (email, password) => {
-    const response = await axios.post('http://localhost:5000/api/auth/login', { email, password });
-    const { token, userId, name, isAdmin } = response.data;
-    localStorage.setItem('token', token);  // Save token in localStorage
-    localStorage.setItem('userId', userId);  // Save token in localStorage
+    try {
+      const response = await axios.post('http://localhost:5000/api/auth/login', { email, password });
+      const { token, userId, name, isAdmin } = response.data;
 
-    setUser({ userId, token, name, isAdmin });
+      localStorage.setItem('token', token);
+      localStorage.setItem('userId', userId);
+      console.log(response.data);
+
+      setUser({ userId, token, name, isAdmin });
+    } catch (err) {
+      console.error('Login error:', err);
+      // Handle login error appropriately
+    }
   };
 
   const register = async (name, email, password) => {
-    const response = await axios.post('http://localhost:5000/api/auth/register', { name, email, password });
-    const { token, userId, name: userName } = response.data;
-    localStorage.setItem('token', token);  // Save token in localStorage
-    setUser({ userId, token, name: userName });
+    try {
+      const response = await axios.post('http://localhost:5000/api/auth/register', { name, email, password });
+      const { token, userId, name: userName } = response.data;
+
+      localStorage.setItem('token', token);
+      setUser({ userId, token, name: userName });
+    } catch (err) {
+      console.error('Registration error:', err);
+      // Handle registration error appropriately
+    }
   };
 
   const logout = () => {
     localStorage.removeItem('token');
     localStorage.removeItem('userId');
-
     setUser(null);
   };
 
