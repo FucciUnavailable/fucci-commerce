@@ -2,6 +2,7 @@ const express = require('express');
 const User = require('../models/User');
 const router = express.Router();
 const authMiddleware = require('../middleware/authMiddleware');
+const isAdmin = require('../middleware/isAdmin');
 
 // Update shipping information
 router.post('/updateAddress', authMiddleware, async (req, res) => {
@@ -43,4 +44,12 @@ router.get('/getUserData', authMiddleware, async (req, res) => {
   }
 });
 
+router.get('/', isAdmin, async (req, res) => {
+  try {
+    const users = await User.find({}, 'name email');
+    res.json(users);
+  } catch (error) {
+    res.status(500).json({ message: 'Error fetching users', error });
+  }
+});
 module.exports = router;

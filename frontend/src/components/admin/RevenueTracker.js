@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 
-const OrderTracker = () => {
+const RevenueTracker = () => {
   const [orderData, setOrderData] = useState([]);
 
   useEffect(() => {
@@ -23,15 +23,15 @@ const OrderTracker = () => {
     fetchOrders();
   }, []);
 
-  // Prepare the data for Recharts
+  // Prepare the data for the chart (only total money made per day)
   const chartData = orderData.map(order => ({
     date: new Date(order.createdAt).toLocaleDateString(),
-    total: order.total,
+    total: order.total, // Total money made per order
   }));
 
   return (
     <div className="bg-white p-4 rounded-lg shadow-md">
-      <h3 className="text-lg font-bold mb-4">Order Tracker</h3>
+      <h3 className="text-lg font-bold mb-4">Money Made Over Time</h3>
       {orderData.length ? (
         <ResponsiveContainer width="100%" height={400}>
           <BarChart data={chartData}>
@@ -50,4 +50,4 @@ const OrderTracker = () => {
   );
 };
 
-export default OrderTracker;
+export default RevenueTracker;

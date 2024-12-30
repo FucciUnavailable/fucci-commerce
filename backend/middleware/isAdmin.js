@@ -5,7 +5,6 @@ const User = require('../models/User'); // Assuming you have a User model
 
 const isAdmin = async (req, res, next) => {
     const token = req.header('Authorization')?.split(' ')[1]; // Extract token from 'Authorization' header
-    console.log(token)
 
   if (!token) {
     return res.status(401).json({ message: 'Token not found, please authenticate.' });

@@ -17,15 +17,17 @@ const Profile = () => {
           headers: { Authorization: `Bearer ${localStorage.getItem('token')}` },
         })
         .then((res) => {
-          setOrders(res.data.orders);
+          console.log("res", res)
+          setOrders(res.data);
         })
         .catch((err) => {
           console.error('Error fetching orders:', err);
         });
     }
   }, [showHistory, user]);
- 
+    console.log("orders",orders)
     const [showUserData, setShowUserData] = useState(false);
+    console.log("user",user)
   
     const toggleUserData = () => {
       setShowUserData(!showUserData);
@@ -35,29 +37,8 @@ const Profile = () => {
     setFormData({ ...formData, [name]: value });
   };
   const handleProfileEdit = async()=>{}
-  // const handleProfileEdit= async () => {
-  //   try {
-  //     const response = await axios.post(
-  //       'http://localhost:5000/api/user/updateAddress', 
-  //       { shippingDetails, userId },
-  //       {
-  //         headers: {
-  //           'Authorization': `Bearer ${localStorage.getItem('token')}`,
-  //         },
-  //       }
-  //     );
-
-  //     if (response.status === 200 || response.status === 201) {
-  //       setModalVisible(true); // Show success modal with message
-  //     } else {
-  //       alert('Failed to update shipping information');
-  //     }
-  //   } catch (error) {
-  //     console.error('Error saving shipping information:', error);
-  //     alert('Failed to update shipping information');
-  //   }
-  // };
-
+  
+  
   const viewOrderDetails = (orderId) => {
     // Navigate to a detailed order page or show a modal with the order details
     console.log(`View details for order: ${orderId}`);

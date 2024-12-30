@@ -19,7 +19,6 @@ const jwt = require('jsonwebtoken');
 const authMiddleware = (req, res, next) => {
   const token = req.header('Authorization')?.split(' ')[1]; // Extract token from 'Authorization' header
   if (!token) return res.status(401).json({ message: 'No token, authorization denied' });
-
   try {
     // Decode the token using your JWT secret
     const decoded = jwt.verify(token, 'your_jwt_secret'); // Make sure to replace 'your_jwt_secret' with your actual secret

@@ -97,12 +97,12 @@ const EditProduct = () => {
       />
       <label className="block text-sm font-medium mb-2">Price</label>
       <input
-        type="number"
+        type="float"
         name="price"
         value={product.price}
         onChange={handleChange}
         className="w-full p-2 mb-4 border border-gray-300 rounded-md"
-        min="0" // Enforce non-negative stock at the HTML level
+        min="0.00" // Enforce non-negative stock at the HTML level
         required
       />
       <label className="block text-sm font-medium mb-2">Category</label>

@@ -1,16 +1,16 @@
 import React, { useState } from 'react';
 import AddProduct from '../components/admin/AddProduct';
 import AdminPage from '../components/admin/AdminPage';
-import OrderTracker from '../components/admin/OrderTracker';
+import RevenueTracker from '../components/admin/RevenueTracker';
 import ProductList from '../components/admin/ProductList';
-
+import OrderManager from '../components/admin/OrderManager';
 const Admin = () => {
   const [focusedComponent, setFocusedComponent] = useState(null);
 
   const handleFocus = (component) => setFocusedComponent(component);
   const handleCloseFocus = () => setFocusedComponent(null);
 
-  return (
+  return (  <>
     <div className="bg-gray-100 min-h-screen py-8 px-4">
       {focusedComponent && (
         <div
@@ -53,12 +53,17 @@ const Admin = () => {
         </div>
         <div
           className="bg-white p-4 rounded-lg shadow-md cursor-pointer hover:shadow-lg transition"
-          onClick={() => handleFocus(<OrderTracker />)}
+          onClick={() => handleFocus(<RevenueTracker />)}
         >
-          <h3 className="text-lg font-bold mb-2">Order Tracker</h3>
+          <h3 className="text-lg font-bold mb-2">Revenue Tracker</h3>
         </div>
       </div>
+      
     </div>
+  
+    <OrderManager />
+    </>
+    
   );
 };
 
