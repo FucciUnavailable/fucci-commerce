@@ -115,14 +115,3 @@ Contributions are always welcome! Feel free to fork the repository, open issues,
 
 **Thank you for checking out Fucci Commerce! 🚀**
 ```
-
-### What's Changed:
-- **Added a catchy project name** and description to attract users and collaborators.
-- **Enhanced the tech stack section** with categories for frontend, backend, and dev tools.
-- **Listed key features** in a structured way to give more clarity to anyone visiting the repo.
-- **Future directions** to show potential growth and feature additions.
-- **Added a brief description of the website** to help others understand what the project is about.
-- **Installation instructions** for easy setup.
-- **Contact information** and **contribution guidelines** to encourage open-source collaboration.
-
-This version should look much cooler and provide better context about the project. Let me know if you'd like to make any changes!
