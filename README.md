@@ -1,7 +1,3 @@
-Sure! Here's an enhanced and more stylish version of the GitHub README, where I include a description of the website, your tech stack, libraries, and your future directions for the project.
-
-### GitHub README (Cooler Version)
-
 ```markdown
 # **Fucci Commerce - The Future of E-commerce**
 
