@@ -3,13 +3,14 @@ import { useAuth } from '../context/AuthContext';
 import axios from 'axios';
 import UserData from '../components/UserData';
 
-
 const Profile = () => {
   const { user } = useAuth();
   const [orders, setOrders] = useState([]);
   const [formData, setFormData] = useState({ name: '', email: '' });
   const [editMode, setEditMode] = useState(false);
-  const [showHistory, setShowHistory] = useState(false); // State to control showing order history
+  const [showHistory, setShowHistory] = useState(false);
+  const [showUserData, setShowUserData] = useState(false);
+  
   useEffect(() => {
     if (user) {
       axios
@@ -17,7 +18,6 @@ const Profile = () => {
           headers: { Authorization: `Bearer ${localStorage.getItem('token')}` },
         })
         .then((res) => {
-          console.log("res", res)
           setOrders(res.data);
         })
         .catch((err) => {
@@ -25,142 +25,157 @@ const Profile = () => {
         });
     }
   }, [showHistory, user]);
-    console.log("orders",orders)
-    const [showUserData, setShowUserData] = useState(false);
-    console.log("user",user)
-  
-    const toggleUserData = () => {
-      setShowUserData(!showUserData);
-    };
+
+  const toggleUserData = () => {
+    setShowUserData(!showUserData);
+  };
+
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
   };
-  const handleProfileEdit = async()=>{}
-  
-  
+
+  const handleProfileEdit = async (e) => {
+    e.preventDefault();
+    // Handle profile edit (e.g., save changes to the backend)
+    console.log('Profile updated:', formData);
+    setEditMode(false);
+  };
+
   const viewOrderDetails = (orderId) => {
-    // Navigate to a detailed order page or show a modal with the order details
     console.log(`View details for order: ${orderId}`);
   };
-  //user data
-  
+
   return (
-    <div className="profile-page">
-      <h1>Welcome, {user ? user.name : 'Loading...'}</h1>
-      <div>
-      <h1>Dashboard</h1>
+    <div className="bg-gray-100 min-h-screen p-6">
+      <div className="max-w-4xl mx-auto bg-white p-6 rounded-lg shadow-lg">
+        <h1 className="text-2xl font-semibold text-gray-800 mb-6">
+          Welcome, {user ? user.name : 'Loading...'}
+        </h1>
 
-      <button onClick={toggleUserData}>
-        {showUserData ? 'Hide User Data' : 'Show User Data'}
-      </button>
+        {/* Dashboard Section */}
+        <div className="mb-6">
+          <h2 className="text-xl font-semibold mb-2">Dashboard</h2>
+          <button
+            onClick={toggleUserData}
+            className="bg-blue-500 text-white px-4 py-2 rounded-md mb-4"
+          >
+            {showUserData ? 'Hide User Data' : 'Show User Data'}
+          </button>
+          {showUserData && <UserData />}
+        </div>
 
-      {showUserData && <UserData />}  {/* Conditionally render the UserData component */}
-    </div>
-
-      {/* Profile Edit Section */}
-      <div className="profile-edit">
-        {editMode ? (
-          <div className="form-container">
-            <h3>Edit Profile</h3>
-            <form onSubmit={handleProfileEdit}>
-              <div className="form-group">
-                <label htmlFor="name">Name</label>
-                <input
-                  type="text"
-                  id="name"
-                  name="name"
-                  value={formData.name}
-                  onChange={handleChange}
-                  required
-                />
-              </div>
-              <div className="form-group">
-                <label htmlFor="email">Email</label>
-                <input
-                  type="email"
-                  id="email"
-                  name="email"
-                  value={formData.email}
-                  onChange={handleChange}
-                  required
-                />
-              </div>
-              <div className="button-group">
-                <button type="submit" className="primary-btn">
-                  Save Changes
-                </button>
-                <button
-                  type="button"
-                  className="secondary-btn"
-                  onClick={() => setEditMode(false)}
-                >
-                  Cancel
-                </button>
-              </div>
-            </form>
-          </div>
-        ) : (
-          <div className="profile-view">
-            <button onClick={() => setEditMode(true)} className="primary-btn">
-              Edit Profile
-            </button>
-          </div>
-        )}
-      </div>
-
-      {/* Show History Button */}
-      <div className="show-history">
-        <button
-          onClick={() => setShowHistory(!showHistory)}
-          className="primary-btn"
-        >
-          {showHistory ? 'Hide History' : 'Show History'}
-        </button>
-      </div>
-
-      {/* Order History Section */}
-      {showHistory && (
-        <div className="order-history">
-          <h2>Order History</h2>
-          {orders.length === 0 ? (
-            <p>You have no previous orders.</p>
-          ) : (
-            <div className="order-list">
-              {orders.map((order) => (
-                <div key={order._id} className="order-card">
-                  <h3>Order ID: {order._id}</h3>
-                  <p>Date: {new Date(order.createdAt).toLocaleDateString()}</p>
-                  <p>Total: ${order.total}</p>
-                  <p>
-                    Status: <span className={`status ${order.status}`}>{order.status}</span>
-                  </p>
-                  <button onClick={() => viewOrderDetails(order._id)}>View Details</button>
+        {/* Profile Edit Section */}
+        <div className="mb-6">
+          {editMode ? (
+            <div className="border p-6 rounded-lg shadow-sm">
+              <h3 className="text-xl font-semibold mb-4">Edit Profile</h3>
+              <form onSubmit={handleProfileEdit}>
+                <div className="mb-4">
+                  <label htmlFor="name" className="block text-gray-700">Name</label>
+                  <input
+                    type="text"
+                    id="name"
+                    name="name"
+                    value={formData.name}
+                    onChange={handleChange}
+                    className="w-full p-3 mt-2 border border-gray-300 rounded-md"
+                    required
+                  />
                 </div>
-              ))}
+                <div className="mb-4">
+                  <label htmlFor="email" className="block text-gray-700">Email</label>
+                  <input
+                    type="email"
+                    id="email"
+                    name="email"
+                    value={formData.email}
+                    onChange={handleChange}
+                    className="w-full p-3 mt-2 border border-gray-300 rounded-md"
+                    required
+                  />
+                </div>
+                <div className="flex gap-4">
+                  <button
+                    type="submit"
+                    className="bg-green-500 text-white px-6 py-2 rounded-md"
+                  >
+                    Save Changes
+                  </button>
+                  <button
+                    type="button"
+                    className="bg-gray-400 text-white px-6 py-2 rounded-md"
+                    onClick={() => setEditMode(false)}
+                  >
+                    Cancel
+                  </button>
+                </div>
+              </form>
+            </div>
+          ) : (
+            <div className="flex justify-between items-center">
+              <button
+                onClick={() => setEditMode(true)}
+                className="bg-blue-500 text-white px-6 py-2 rounded-md"
+              >
+                Edit Profile
+              </button>
             </div>
           )}
         </div>
-      )}
 
-      {/* Dashboard Stats Section */}
-      <div className="dashboard">
-        <h2>Your Dashboard</h2>
-        <div className="dashboard-stats">
-          <div className="stat-card">
-            <h3>Total Orders</h3>
-            <p>{orders.length}</p>
-          </div>
-          <div className="stat-card">
-            <h3>Total Spending</h3>
-            <p>
-              ${orders.reduce((acc, order) => acc + order.total, 0).toFixed(2)}
-            </p>
+        {/* Order History Section */}
+        <div className="mb-6">
+          <button
+            onClick={() => setShowHistory(!showHistory)}
+            className="bg-blue-500 text-white px-6 py-2 rounded-md"
+          >
+            {showHistory ? 'Hide History' : 'Show History'}
+          </button>
+
+          {showHistory && (
+            <div className="mt-4">
+              <h2 className="text-xl font-semibold mb-4">Order History</h2>
+              {orders.length === 0 ? (
+                <p className="text-gray-700">You have no previous orders.</p>
+              ) : (
+                <div className="space-y-4">
+                  {orders.map((order) => (
+                    <div key={order._id} className="p-4 border rounded-lg shadow-sm hover:bg-gray-50">
+                      <h3 className="text-lg font-semibold">Order ID: {order._id}</h3>
+                      <p className="text-gray-700">Date: {new Date(order.createdAt).toLocaleDateString()}</p>
+                      <p className="text-gray-700">Total: ${order.total}</p>
+                      <p className={`status ${order.status}`}>Status: {order.status}</p>
+                      <button
+                        onClick={() => viewOrderDetails(order._id)}
+                        className="mt-2 text-blue-500"
+                      >
+                        View Details
+                      </button>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
+          )}
+        </div>
+
+        {/* Dashboard Stats Section */}
+        <div>
+          <h2 className="text-xl font-semibold mb-4">Your Dashboard</h2>
+          <div className="grid grid-cols-2 gap-6">
+            <div className="p-4 bg-blue-100 rounded-lg shadow-md">
+              <h3 className="font-semibold">Total Orders</h3>
+              <p>{orders.length}</p>
+            </div>
+            <div className="p-4 bg-blue-100 rounded-lg shadow-md">
+              <h3 className="font-semibold">Total Spending</h3>
+              <p>${orders.reduce((acc, order) => acc + order.total, 0).toFixed(2)}</p>
+            </div>
           </div>
         </div>
       </div>
     </div>
-
   );
 };
 
