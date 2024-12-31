@@ -3,6 +3,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { clearCart } from '../redux/actions/cartActions'; // Import clearCart action
 import axios from 'axios';
+import PayPalButton from '../components/PaypalButton';
 
 const Checkout = () => {
   const cart = useSelector((state) => state.cart.cart);
@@ -216,10 +217,11 @@ const Checkout = () => {
           type="submit"
           className="w-full py-4 text-white bg-green-600 hover:bg-green-700 rounded-md shadow-md focus:outline-none focus:ring-2 focus:ring-green-600 mt-6"
         >
-          Complete Purchase
+          Complete Purchase (JUST FOR TESTING)
         </button>
       </form>
     </div>
+
   );
 };
 

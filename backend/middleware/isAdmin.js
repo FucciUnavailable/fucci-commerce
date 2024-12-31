@@ -1,8 +1,8 @@
 //isAmin middleware to check if user is admin or not
-
+require('dotenv').config();
 const jwt = require('jsonwebtoken');
 const User = require('../models/User'); // Assuming you have a User model
-
+const jwtSecret = process.env.JWT_SECRET;
 const isAdmin = async (req, res, next) => {
     const token = req.header('Authorization')?.split(' ')[1]; // Extract token from 'Authorization' header
 
@@ -10,7 +10,7 @@ const isAdmin = async (req, res, next) => {
     return res.status(401).json({ message: 'Token not found, please authenticate.' });
   }
   try {
-    const decoded = jwt.verify(token, 'your_jwt_secret');    
+    const decoded = jwt.verify(token, jwtSecret);    
     // Check if user is admin in the database
     const user = await User.findById(decoded.userId);
 
