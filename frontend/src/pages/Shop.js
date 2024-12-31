@@ -21,7 +21,6 @@ const Shop = () => {
     // Fetch products
     axios.get('http://localhost:5000/api/products')
       .then(response => {
-        console.log(response.data)
         setProducts(response.data); 
         const allPrices = response.data.map(product => product.price);
         setMinProductPrice(Math.min(...allPrices));

@@ -33,15 +33,15 @@ export const AuthProvider = ({ children }) => {
     try {
       const response = await axios.post('http://localhost:5000/api/auth/login', { email, password });
       const { token, userId, name, isAdmin } = response.data;
-
       localStorage.setItem('token', token);
       localStorage.setItem('userId', userId);
       console.log(response.data);
-
       setUser({ userId, token, name, isAdmin });
     } catch (err) {
       console.error('Login error:', err);
       // Handle login error appropriately
+       // Throw the error to signal failure
+    throw new Error(err.response?.data?.message || 'Failed to log in.');
     }
   };
 
@@ -55,6 +55,8 @@ export const AuthProvider = ({ children }) => {
     } catch (err) {
       console.error('Registration error:', err);
       // Handle registration error appropriately
+       // Throw the error to signal failure
+    throw new Error(err.response?.data?.message || 'Failed to log in.');
     }
   };
 

@@ -220,7 +220,8 @@ const Checkout = () => {
           Complete Purchase (JUST FOR TESTING)
         </button>
       </form>
-    </div>
+    </div>,
+    <PayPalButton totalPrice={getTotal()} />
 
   );
 };
