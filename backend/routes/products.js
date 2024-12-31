@@ -7,6 +7,7 @@ const isAdmin = require('../middleware/isAdmin');
 router.get('/', async (req, res) => {
   try {
     const products = await Product.find();
+    console.log(products)
     res.json(products);
   } catch (err) {
     res.status(400).send(err);
@@ -15,10 +16,10 @@ router.get('/', async (req, res) => {
 
 // Add new product (Admin)
 router.post('/addProduct', isAdmin, async (req, res) => {
-  const { name, price, description, imageUrl, category, stock } = req.body;
-  console.log("route")
+  const { name, price, description, image, category, stock } = req.body;
+  console.log(req.body)
   try {
-    const newProduct = new Product({ name, price, description, imageUrl, category, stock });
+    const newProduct = new Product({ name, price, description, image, category, stock });
     await newProduct.save();
     res.status(201).json(newProduct);
   } catch (err) {

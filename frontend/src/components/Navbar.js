@@ -37,7 +37,7 @@ const Navbar = () => {
     <nav className="navbar bg-blue-600 text-white p-4 flex justify-between items-center shadow-lg">
       {/* Logo/Home Link */}
       <Link to="/" className="text-2xl font-bold text-white hover:text-blue-200 transition-all duration-200">
-        MyApp
+        Fucci-Shop
       </Link>
 
       {/* Hamburger Menu Button */}

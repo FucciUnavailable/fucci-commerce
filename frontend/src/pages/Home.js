@@ -1,8 +1,10 @@
+// src/pages/Home.js
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { useAuth } from '../context/AuthContext'; // Import the AuthContext to check user state
-import { Particles } from 'react-tsparticles'; // Correct import
-import { motion } from 'framer-motion'; // Import framer-motion for animations
+import { useAuth } from '../context/AuthContext'; // Importing AuthContext to check user state
+import ParticlesBackground from '../services/ParticlesBackground'; // Importing particles background component
+import { motion } from 'framer-motion'; // Importing framer-motion for animations
+import { FaShoppingCart, FaSignInAlt, FaUserAlt } from 'react-icons/fa'; // Importing React Icons
 
 const Home = () => {
   const { user } = useAuth() || {}; // Safely access `user` from context
@@ -10,60 +12,12 @@ const Home = () => {
   return (
     <div className="home relative">
       {/* Particles Background */}
-      <Particles
-        options={{
-          particles: {
-            number: {
-              value: 80,
-              density: {
-                enable: true,
-                value_area: 800,
-              },
-            },
-            shape: {
-              type: 'circle',
-            },
-            opacity: {
-              value: 0.5,
-              random: true,
-              anim: {
-                enable: true,
-                speed: 1,
-                opacity_min: 0,
-              },
-            },
-            size: {
-              value: 3,
-              random: true,
-              anim: {
-                enable: true,
-                speed: 5,
-                size_min: 0.3,
-              },
-            },
-            line_linked: {
-              enable: true,
-              distance: 150,
-              color: '#fff',
-              opacity: 0.4,
-              width: 1,
-            },
-            move: {
-              enable: true,
-              speed: 2,
-              direction: 'none',
-              random: true,
-              straight: false,
-            },
-          },
-        }}
-        className="absolute top-0 left-0 w-full h-full z-0"
-      />
-      
-      {/* Main Content */}
-      <header className="hero bg-blue-500 text-white p-12 text-center relative z-10">
+      <ParticlesBackground />
+
+      {/* Hero Section */}
+      <header className="hero bg-blue-500 text-white p-12 text-center relative z-10 rounded-b-3xl shadow-lg">
         <motion.h1
-          className="text-5xl font-bold mb-4"
+          className="text-5xl font-bold mb-6 leading-tight tracking-wide"
           initial={{ opacity: 0, y: -50 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 1 }}
@@ -71,14 +25,27 @@ const Home = () => {
           Welcome to Our Shop
         </motion.h1>
 
+        <motion.p
+          className="text-lg mb-6 font-light"
+          initial={{ opacity: 0, scale: 0.8 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 1, delay: 0.5 }}
+        >
+          Explore our amazing range of products with unbeatable prices.
+        </motion.p>
+
         {user ? (
           <motion.div
             initial={{ opacity: 0, scale: 0.8 }}
             animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 1, delay: 0.5 }}
+            transition={{ duration: 1, delay: 1 }}
           >
             <p className="text-lg mb-6">Hello, {user.name}! Ready to shop?</p>
-            <Link to="/shop" className="btn btn-primary bg-green-500 hover:bg-green-600 text-white px-6 py-3 rounded-lg shadow-lg">
+            <Link
+              to="/shop"
+              className="btn btn-primary bg-green-500 hover:bg-green-600 text-white px-8 py-3 rounded-lg shadow-lg flex items-center justify-center"
+            >
+              <FaShoppingCart className="mr-2" />
               Go to Shop
             </Link>
           </motion.div>
@@ -86,60 +53,112 @@ const Home = () => {
           <motion.div
             initial={{ opacity: 0, scale: 0.8 }}
             animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 1, delay: 0.5 }}
+            transition={{ duration: 1, delay: 1 }}
           >
             <p className="text-lg mb-6">Browse through our collection of amazing products!</p>
-            <Link to="/shop" className="btn btn-primary bg-yellow-500 hover:bg-yellow-600 text-white px-6 py-3 rounded-lg shadow-lg">
+            <Link
+              to="/shop"
+              className="btn btn-primary bg-yellow-500 hover:bg-yellow-600 text-white px-8 py-3 rounded-lg shadow-lg flex items-center justify-center"
+            >
+              <FaShoppingCart className="mr-2" />
               Shop Now
             </Link>
             <div className="mt-6">
-              <Link to="/auth" className="btn btn-secondary mr-4 bg-gray-500 hover:bg-gray-600 text-white px-6 py-3 rounded-lg shadow-lg">
-                Auth Here
+              <Link
+                to="/auth"
+                className="btn btn-secondary mr-4 bg-gray-500 hover:bg-gray-600 text-white px-6 py-3 rounded-lg shadow-lg flex items-center justify-center"
+              >
+                <FaSignInAlt className="mr-2" />
+                Sign In
               </Link>
             </div>
           </motion.div>
         )}
       </header>
 
-      {/* Showcase Section */}
-      <section className="showcase text-center py-16 bg-gray-100">
+      {/* Features Section */}
+      <section className="features py-16 bg-gray-100 text-center">
         <motion.h2
           className="text-4xl font-semibold mb-8"
           initial={{ opacity: 0, y: -50 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 1, delay: 1 }}
         >
-          Here’s what we’ve built!
+          Why Choose Us?
+        </motion.h2>
+
+        <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-3 gap-12">
+          <motion.div
+            className="feature-card bg-white p-6 rounded-lg shadow-xl transform hover:scale-105 transition-all"
+            initial={{ opacity: 0, scale: 0.8 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.8 }}
+          >
+            <FaUserAlt className="text-6xl text-blue-500 mb-4 mx-auto" />
+            <h3 className="text-xl font-semibold mb-4">Personalized Experience</h3>
+            <p className="text-gray-600">
+              Tailored shopping experience based on your preferences and needs.
+            </p>
+          </motion.div>
+
+          <motion.div
+            className="feature-card bg-white p-6 rounded-lg shadow-xl transform hover:scale-105 transition-all"
+            initial={{ opacity: 0, scale: 0.8 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.8 }}
+          >
+            <FaShoppingCart className="text-6xl text-green-500 mb-4 mx-auto" />
+            <h3 className="text-xl font-semibold mb-4">Fast and Easy Checkout</h3>
+            <p className="text-gray-600">
+              With multiple payment methods and quick checkout, shopping has never been easier.
+            </p>
+          </motion.div>
+
+          <motion.div
+            className="feature-card bg-white p-6 rounded-lg shadow-xl transform hover:scale-105 transition-all"
+            initial={{ opacity: 0, scale: 0.8 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.8 }}
+          >
+            <FaUserAlt className="text-6xl text-yellow-500 mb-4 mx-auto" />
+            <h3 className="text-xl font-semibold mb-4">24/7 Customer Support</h3>
+            <p className="text-gray-600">
+              Our support team is available round the clock to assist with any issues.
+            </p>
+          </motion.div>
+        </div>
+      </section>
+
+      {/* Call to Action Section */}
+      <section className="cta py-16 bg-blue-500 text-white text-center">
+        <motion.h2
+          className="text-3xl font-semibold mb-8"
+          initial={{ opacity: 0, y: -50 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 1, delay: 1 }}
+        >
+          Ready to take the next step?
         </motion.h2>
 
         <motion.div
-          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
-          initial={{ opacity: 0, scale: 0.9 }}
+          initial={{ opacity: 0, scale: 0.8 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 1, delay: 1.5 }}
         >
-          <div className="card bg-white p-6 rounded-lg shadow-lg">
-            <h3 className="text-xl font-semibold mb-4">Beautiful User Interface</h3>
-            <p className="text-gray-600 mb-4">
-              We’ve designed a sleek and intuitive interface for a seamless shopping experience.
-            </p>
-          </div>
-
-          <div className="card bg-white p-6 rounded-lg shadow-lg">
-            <h3 className="text-xl font-semibold mb-4">Category Filters</h3>
-            <p className="text-gray-600 mb-4">
-              Easily find products with advanced filtering options like price range, categories, and availability.
-            </p>
-          </div>
-
-          <div className="card bg-white p-6 rounded-lg shadow-lg">
-            <h3 className="text-xl font-semibold mb-4">Responsive Design</h3>
-            <p className="text-gray-600 mb-4">
-              Our site works seamlessly across all devices, from desktop to mobile.
-            </p>
-          </div>
+          <Link
+            to="/shop"
+            className="btn btn-primary bg-green-600 hover:bg-green-700 text-white px-8 py-3 rounded-lg shadow-lg"
+          >
+            Start Shopping Now
+          </Link>
         </motion.div>
       </section>
+
+      {/* Footer Section */}
+      <footer className="footer bg-gray-900 text-white py-8 text-center">
+        <p>&copy; 2024 Fucci Commerce. All Rights Reserved.</p>
+        <p className="mt-2">Your favorite place to shop with ease and style!</p>
+      </footer>
     </div>
   );
 };
