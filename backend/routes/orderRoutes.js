@@ -23,7 +23,7 @@ router.get('/', isAdmin, async (req, res) => {
       query.userId = userId;
     }
 
-    const orders = await Order.find(query).populate('userId', 'name email').populate('cart.productId', 'name');
+    const orders = await Order.find(query).populate('userId', 'name email').populate('cart.productId', 'name').limit(50).sort({ createdAt: -1 }); // Sort by createdAt field, -1 for descending order;
     res.json(orders);
   } catch (error) {
     res.status(500).json({ message: 'Error fetching orders', error });
