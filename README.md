@@ -1,4 +1,4 @@
-```markdown
+
 # **Fucci Commerce - The Future of E-commerce**
 
 Welcome to the repository of **Fucci Commerce** — an innovative e-commerce platform designed to offer a seamless shopping experience with cutting-edge technology, clean design, and fast performance.
@@ -70,7 +70,7 @@ To set up the project locally:
 
    ```bash
    git clone https://github.com/yourusername/fucci-commerce.git
-   ```
+
 
 2. **Install dependencies:**
 
