@@ -13,6 +13,7 @@ const PayPalButton = ({ totalPrice }) => {
       window.paypal.Buttons({
         createOrder(data, actions) {
           // Create the payment order
+          console.log(data)
           return actions.order.create({
             purchase_units: [
               {

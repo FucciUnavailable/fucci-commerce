@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import { clearCart } from '../redux/actions/cartActions';
+import { clearCart } from '../redux/actions/cartActions'; // Import clearCart action
 import axios from 'axios';
 
 const Checkout = () => {
@@ -62,9 +62,10 @@ const Checkout = () => {
 
       if (response.status === 201) {
         // After the shipping info is saved, show the PayPal button
-        
         navigate('/order-confirmation', { state: { orderId: response.data.data.orderId } });
-        dispatch(clearCart()) // Clear the cart
+
+        // Dispatch the clearCart action to clear the cart after the order is placed
+        dispatch(clearCart());
       } else {
         alert('Error placing order');
       }
@@ -102,33 +103,36 @@ const Checkout = () => {
   };
 
   return (
-    <div className="checkout">
-      <h1 className="text-3xl font-semibold mb-6">Checkout</h1>
+    <div className="checkout container mx-auto py-12 px-4 sm:px-6 lg:px-8">
+      <h1 className="text-4xl font-bold text-center text-gray-800 mb-6">Checkout</h1>
 
-      <div className="cart-summary">
-        <h2>Your Cart</h2>
-        <ul>
+      <div className="cart-summary bg-white p-6 rounded-lg shadow-lg mb-8">
+        <h2 className="text-xl font-semibold text-gray-700 mb-4">Your Cart</h2>
+        <ul className="space-y-4">
           {cart.map((product) => (
-            <li key={product._id} className="cart-item">
-              <img src={product.image} alt={product.name} className="w-16 h-16 object-cover" />
-              <p>{product.name}</p>
-              <p>${product.price} x {product.quantity}</p>
+            <li key={product._id} className="flex items-center justify-between border-b pb-4">
+              <img src={product.image} alt={product.name} className="w-16 h-16 object-cover rounded-md" />
+              <div className="flex-1 ml-4">
+                <p className="font-semibold text-gray-800">{product.name}</p>
+                <p className="text-gray-500">${product.price} x {product.quantity}</p>
+              </div>
             </li>
           ))}
         </ul>
-        <div className="total">
-          <p className="font-semibold">Total: ${getTotal()}</p>
+        <div className="total mt-4 text-right">
+          <p className="font-semibold text-xl text-gray-900">Total: ${getTotal()}</p>
         </div>
       </div>
 
-      <h2 className="mt-6">Shipping Details</h2>
-      <form onSubmit={handleSubmit}>
+      <h2 className="text-2xl font-semibold text-gray-700 mb-6">Shipping Details</h2>
+      <form onSubmit={handleSubmit} className="space-y-4">
         <input
           type="text"
           name="fullName"
           placeholder="Full Name"
           value={shippingDetails.fullName}
           onChange={handleInputChange}
+          className="w-full p-4 border rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-600"
           required
         />
         <input
@@ -137,6 +141,7 @@ const Checkout = () => {
           placeholder="Phone Number"
           value={shippingDetails.phone}
           onChange={handleInputChange}
+          className="w-full p-4 border rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-600"
           required
         />
         <input
@@ -145,6 +150,7 @@ const Checkout = () => {
           placeholder="Address"
           value={shippingDetails.address}
           onChange={handleInputChange}
+          className="w-full p-4 border rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-600"
           required
         />
         <input
@@ -153,6 +159,7 @@ const Checkout = () => {
           placeholder="City"
           value={shippingDetails.city}
           onChange={handleInputChange}
+          className="w-full p-4 border rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-600"
           required
         />
         <input
@@ -161,6 +168,7 @@ const Checkout = () => {
           placeholder="State"
           value={shippingDetails.state}
           onChange={handleInputChange}
+          className="w-full p-4 border rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-600"
           required
         />
         <input
@@ -169,6 +177,7 @@ const Checkout = () => {
           placeholder="Postal Code"
           value={shippingDetails.postalCode}
           onChange={handleInputChange}
+          className="w-full p-4 border rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-600"
           required
         />
         <input
@@ -177,27 +186,38 @@ const Checkout = () => {
           placeholder="Country"
           value={shippingDetails.country}
           onChange={handleInputChange}
+          className="w-full p-4 border rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-600"
           required
         />
 
         <button
           type="button"
-          className="btn btn-primary mt-4"
-          onClick={handleSaveShipping}  // Save Shipping Information Button
+          className="w-full py-4 text-white bg-indigo-600 hover:bg-indigo-700 rounded-md shadow-md focus:outline-none focus:ring-2 focus:ring-indigo-600"
+          onClick={handleSaveShipping}
         >
           Save Shipping Information
         </button>
 
         {modalVisible && (
-          <div className="modal">
-            <div className="modal-content">
-              <p>Your shipping information has been updated!</p>
-              <button onClick={() => setModalVisible(false)}>Close</button>
+          <div className="modal bg-gray-900 bg-opacity-50 fixed inset-0 flex items-center justify-center">
+            <div className="modal-content bg-white p-8 rounded-lg shadow-lg text-center">
+              <p className="text-lg font-semibold">Your shipping information has been updated!</p>
+              <button 
+                onClick={() => setModalVisible(false)} 
+                className="mt-4 px-4 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700"
+              >
+                Close
+              </button>
             </div>
           </div>
         )}
 
-        <button type="submit" className="btn btn-primary mt-4">Complete Purchase</button>
+        <button
+          type="submit"
+          className="w-full py-4 text-white bg-green-600 hover:bg-green-700 rounded-md shadow-md focus:outline-none focus:ring-2 focus:ring-green-600 mt-6"
+        >
+          Complete Purchase
+        </button>
       </form>
     </div>
   );

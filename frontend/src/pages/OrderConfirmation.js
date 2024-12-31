@@ -88,7 +88,7 @@ const OrderConfirmation = () => {
             Continue Shopping
           </Link>
           <Link
-            to="/orders"
+            to="https://www.usps.com/"
             className="text-blue-600 border-2 border-blue-600 hover:bg-blue-600 hover:text-white rounded-lg px-6 py-3 text-lg font-semibold"
           >
             Track Your Order
