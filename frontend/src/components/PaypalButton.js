@@ -2,9 +2,9 @@ import { useEffect } from 'react';
 
 const PayPalButton = ({ totalPrice }) => {
   useEffect(() => {
-    // Load PayPal script with client ID from environment variable
+    // Load PayPal script
     const script = document.createElement('script');
-    script.src = `https://www.paypal.com/sdk/js?client-id=${process.env.REACT_APP_PAYPAL_CLIENT_ID}&components=buttons`;
+    script.src = `https://www.paypal.com/sdk/js?client-id=AdSn4zJ5IhpdPLGUIexG3k8J5pHQJAyyMSb2Qa4wZUtCMCikPq51X1JHnuoPz6L-NGOedtCTyFXDxo59&components=buttons`;
     script.async = true;
     document.body.appendChild(script);
 
@@ -13,7 +13,7 @@ const PayPalButton = ({ totalPrice }) => {
       window.paypal.Buttons({
         createOrder(data, actions) {
           // Create the payment order
-          console.log(data);
+          console.log(data)
           return actions.order.create({
             purchase_units: [
               {

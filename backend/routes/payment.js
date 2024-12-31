@@ -1,7 +1,7 @@
 // backend/routes/payment.js
 
 const express = require('express');
-const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY); // Add your secret Stripe key here
+const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY); // secret Stripe key here
 const router = express.Router();
 
 router.post('/checkout', async (req, res) => {

@@ -29,7 +29,6 @@ router.post('/addProduct', isAdmin, async (req, res) => {
 router.get('/categories', async (req, res) => {
   try {
     const categories = await Product.distinct('category');  // Get unique categories
-    console.log(categories)
     res.json(categories);
   } catch (err) {
     res.status(400).send(err);
