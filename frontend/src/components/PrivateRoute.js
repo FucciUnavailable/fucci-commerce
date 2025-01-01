@@ -7,7 +7,7 @@ const PrivateRoute = ({ element, ...rest }) => {
   const { user } = useAuth();
 
   // Check if the user is authenticated, otherwise navigate to login page
-  return user ? element : <Navigate to="/login" />;
+  return user ? element : <Navigate to="/auth" />;
 };
 
 export default PrivateRoute;
