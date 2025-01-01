@@ -18,6 +18,7 @@ function App() {
   return (
     <Router>
        <Navbar />
+       <div className="pt-24">
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/shop" element={<Shop />} />
@@ -31,6 +32,7 @@ function App() {
         <Route path="/admin" element={<Admin />} />
         <Route path="/edit-product/:id" element={<EditProduct />} />
       </Routes>
+      </div>
     </Router>
   );
 }

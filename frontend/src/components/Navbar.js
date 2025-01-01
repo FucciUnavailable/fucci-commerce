@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { useSelector } from 'react-redux';
@@ -9,6 +9,7 @@ const Navbar = () => {
   const { user } = useAuth();
   const cart = useSelector((state) => state.cart.cart);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isScrolled, setIsScrolled] = useState(false);
   const [isCartOpen, setIsCartOpen] = useState(false);
 
   const cartRef = useRef(null); // Create a ref for the cart dropdown
@@ -16,8 +17,23 @@ const Navbar = () => {
   const toggleMenu = () => setIsMenuOpen(!isMenuOpen);
   const toggleCart = () => setIsCartOpen(!isCartOpen);
 
-  const getTotalItems = () =>
-    cart.reduce((acc, item) => acc + item.quantity, 0);
+  const getTotalItems = () => cart.reduce((acc, item) => acc + item.quantity, 0);
+
+  // Handle scroll effect for sticky navbar
+  useEffect(() => {
+    const handleScroll = () => {
+      if (window.scrollY > 50) {
+        setIsScrolled(true); // Show navbar with shadow when scrolling
+      } else {
+        setIsScrolled(false);
+      }
+    };
+
+    window.addEventListener('scroll', handleScroll);
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+    };
+  }, []);
 
   // Close the cart if the click is outside the cart area
   useEffect(() => {
@@ -34,11 +50,22 @@ const Navbar = () => {
   }, []);
 
   return (
-    <nav className="navbar bg-blue-600 text-white p-4 flex justify-between items-center shadow-lg">
+    <nav
+      className={`navbar bg-blue-600 text-white p-3 md:p-4 flex justify-between items-center shadow-lg fixed top-0 left-0 w-full z-50 transition-all duration-300 ${isScrolled ? 'shadow-lg' : ''}`}
+    >
       {/* Logo/Home Link */}
-      <Link to="/" className="text-2xl font-bold text-white hover:text-blue-200 transition-all duration-200">
+      <Link to="/" className="text-xl md:text-2xl font-bold text-white hover:text-blue-200 transition-all duration-200">
         Fucci-Shop
       </Link>
+
+      {/* Search Bar (Desktop) */}
+      <div className="hidden md:block relative ml-4">
+        <input
+          type="text"
+          placeholder="Search..."
+          className="bg-white text-black p-1 md:p-2 rounded-full w-48 md:w-64"
+        />
+      </div>
 
       {/* Hamburger Menu Button */}
       <button
@@ -66,7 +93,7 @@ const Navbar = () => {
       <div
         className={`${
           isMenuOpen ? 'block' : 'hidden'
-        } absolute top-16 left-0 w-full bg-blue-600 md:static md:flex md:space-x-6 md:items-center`}
+        } absolute top-16 left-0 w-full bg-blue-600 md:static md:flex md:space-x-6 md:items-center p-4 md:p-0 transition-all duration-300 ease-in-out`}
       >
         <Link
           to="/"

@@ -6,7 +6,6 @@ const jwtSecret = process.env.JWT_SECRET;
 
 const authMiddleware = (req, res, next) => {
   const token = req.header('Authorization')?.split(' ')[1]; // Extract token from 'Authorization' header
-  console.log(req.header('Authorization'))
   if (!token) return res.status(401).json({ message: 'No token, authorization denied' });
   try {
     // Decode the token using your JWT secret
