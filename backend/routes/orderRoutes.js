@@ -1,5 +1,6 @@
 const express = require('express');
 const Order = require('../models/Order');
+const Product = require('../models/Product');
 const authMiddleware = require('../middleware/authMiddleware');
 const isAdmin = require('../middleware/isAdmin');
 const router = express.Router();
@@ -39,12 +40,31 @@ router.post('/', authMiddleware, async (req, res) => {
     return res.status(400).json({ message: 'Missing required fields' });
   }
 
-  const validCart = cart.every(item => item.productId);
+  const validCart = cart.every(item => item.productId && item.quantity > 0);
   if (!validCart) {
-    return res.status(400).json({ message: 'Each item in the cart must have a productId' });
+    return res.status(400).json({ message: 'Each item in the cart must have a valid productId and quantity' });
   }
 
+  const session = await Order.startSession();
+  session.startTransaction();
+
   try {
+    // Check stock and update product quantities
+    for (const item of cart) {
+      const product = await Product.findById(item.productId).session(session);
+      if (!product) {
+        throw new Error(`Product with ID ${item.productId} not found`);
+      }
+
+      if (product.stock < item.quantity) {
+        throw new Error(`Insufficient stock for product: ${product.name}`);
+      }
+
+      product.stock -= item.quantity;
+      await product.save({ session });
+    }
+
+    // Create the order
     const order = new Order({
       userId,
       cart,
@@ -52,7 +72,12 @@ router.post('/', authMiddleware, async (req, res) => {
       total,
     });
 
-    await order.save();
+    await order.save({ session });
+
+    // Commit the transaction
+    await session.commitTransaction();
+    session.endSession();
+
     res.status(201).json({
       success: true,
       message: 'Order placed successfully',
@@ -63,9 +88,12 @@ router.post('/', authMiddleware, async (req, res) => {
     });
   } catch (error) {
     console.error('Order creation error:', error);
-    res.status(500).json({ success: false, message: 'Server error, please try again later' });
+    await session.abortTransaction();
+    session.endSession();
+    res.status(500).json({ success: false, message: error.message });
   }
 });
+
 
 // Update the order status (only accessible by admin)
 router.patch('/:id', isAdmin, async (req, res) => {

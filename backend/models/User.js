@@ -2,14 +2,15 @@
 const mongoose = require('mongoose');
 
 const userInformationSchema = new mongoose.Schema({
-  fullName: { type: String },
-  phone: { type: String },
-  address: { type: String },
-  city: { type: String },
-  state: { type: String },
-  postalCode: { type: String },
-  country: { type: String },
+  fullName: { type: String, default: '' },
+  phone: { type: String, default: '' },
+  address: { type: String, default: '' },
+  city: { type: String, default: '' },
+  state: { type: String, default: '' },
+  postalCode: { type: String, default: '' },
+  country: { type: String, default: '' },
 });
+
 const userSchema = new mongoose.Schema({
   name: { type: String, required: true },
   email: { type: String, required: true, unique: true },

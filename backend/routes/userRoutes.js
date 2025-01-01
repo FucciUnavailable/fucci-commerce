@@ -6,8 +6,9 @@ const isAdmin = require('../middleware/isAdmin');
 
 // Update shipping information
 router.post('/updateAddress', authMiddleware, async (req, res) => {
-  const { userId } = req.body;
-  const userInformation = req.body.shippingDetails // expect userId and shipping info in the body
+  const userId  = req.user.userId;
+  const userInformation = req.body.shippingDetails // expect shipping info in the body
+
   try {
     const user = await User.findByIdAndUpdate(
       userId,
@@ -29,9 +30,10 @@ router.post('/updateAddress', authMiddleware, async (req, res) => {
 router.get('/getUserData', authMiddleware, async (req, res) => {
 
   const userId = req.user.userId; // Assuming user authentication middleware
-  
+  console.log("userId", userId);
   try {
     const user = await User.findById(userId);
+    console.log("user", user)
     if (!user) {
       return res.status(404).json({ message: 'User not found' });
     }
