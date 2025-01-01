@@ -55,7 +55,7 @@ const Navbar = () => {
     >
       {/* Logo/Home Link */}
       <Link to="/" className="text-xl md:text-2xl font-bold text-white hover:text-blue-200 transition-all duration-200">
-        Fucci-Shop
+        Fucci
       </Link>
 
       {/* Search Bar (Desktop) */}
