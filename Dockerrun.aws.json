@@ -1,0 +1,22 @@
+{
+    "AWSEBDockerrunVersion": "1",
+    "ContainerDefinitions": [
+      {
+        "Name": "backend",
+        "Image": "backend:latest",
+        "Essential": true,
+        "PortMappings": [
+          { "ContainerPort": 3001, "HostPort": 3001 }
+        ]
+      },
+      {
+        "Name": "frontend",
+        "Image": "frontend:latest",
+        "Essential": true,
+        "PortMappings": [
+          { "ContainerPort": 80, "HostPort": 80 }
+        ]
+      }
+    ]
+  }
+  
