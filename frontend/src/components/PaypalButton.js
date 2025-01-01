@@ -4,7 +4,7 @@ const PayPalButton = ({ totalPrice }) => {
   useEffect(() => {
     // Load PayPal script
     const script = document.createElement('script');
-    script.src = `https://www.paypal.com/sdk/js?client-id=AdSn4zJ5IhpdPLGUIexG3k8J5pHQJAyyMSb2Qa4wZUtCMCikPq51X1JHnuoPz6L-NGOedtCTyFXDxo59&components=buttons`;
+    script.src = `https://www.paypal.com/sdk/js?client-id=testAPI&components=buttons`;
     script.async = true;
     document.body.appendChild(script);
 
