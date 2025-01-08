@@ -11,6 +11,6 @@ applications:
           commands:
             - npm run build  # The build command for React
       artifacts:
-        baseDirectory: frontend/build  # The output directory where the built files are located
+        baseDirectory: build  # The output directory where the built files are located
         files:
           - '**/*'  # This includes all files in the build directory
