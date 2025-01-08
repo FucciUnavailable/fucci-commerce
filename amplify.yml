@@ -1,0 +1,11 @@
+version: 1
+applications:
+  - appRoot: frontend  # This tells Amplify that the frontend directory contains the build files
+    frontend:
+      phases:
+        preBuild:
+          commands:
+            - npm install
+        build:
+          commands:
+            - npm run build  # Ensure this is the build command for your React app
