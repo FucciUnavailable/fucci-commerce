@@ -9,7 +9,7 @@ const orderRoutes = require('./routes/orderRoutes');
 const app = express();
 const port = process.env.PORT || 5000;
 
-console.log("test jenkins")
+console.log("test eb deploy")
 // Middleware
 app.use(cors());
 app.use(express.json()); // For parsing JSON request bodies
