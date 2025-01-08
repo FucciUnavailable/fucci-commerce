@@ -24,7 +24,7 @@ jobs:
         cd backend
         echo $AWS_ACCESS_KEY_ID
         echo $AWS_SECRET_ACCESS_KEY
-        eb init -p node.js backend --region your-region
+        eb init -p node.js backend --region us-west-2
         eb deploy fucci-commerce
 
     - name: Deploy Frontend
@@ -35,5 +35,5 @@ jobs:
         cd frontend
         echo $AWS_ACCESS_KEY_ID
         echo $AWS_SECRET_ACCESS_KEY
-        eb init -p node.js frontend --region your-region
+        eb init -p node.js frontend --region us-west-2
         eb deploy frontend-fucci-commerce
