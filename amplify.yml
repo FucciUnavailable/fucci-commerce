@@ -1,6 +1,6 @@
 version: 1
 applications:
-  - appRoot: frontend  # This tells Amplify that the frontend directory contains the build files
+  - appRoot: frontend  # This tells Amplify the location of the frontend folder
     frontend:
       phases:
         preBuild:
@@ -8,4 +8,8 @@ applications:
             - npm install
         build:
           commands:
-            - npm run build  # Ensure this is the build command for your React app
+            - npm run build  # The build command for React
+      artifacts:
+        baseDirectory: frontend/build  # The output directory where the built files are located
+        files:
+          - '**/*'  # This includes all files in the build directory
