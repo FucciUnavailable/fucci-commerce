@@ -102,8 +102,8 @@ To set up the project locally:
 Feel free to reach out to me for any questions, suggestions, or collaborations! 😊
 
 - **Email**: ..
-- **GitHub**: [yourgithubprofile](https://github.com/FucciUnavailable)
-- **LinkedIn**: [yourlinkedinprofile](https://linkedin.com/in/amine-akacha)
+- **GitHub**: [Github](https://github.com/FucciUnavailable)
+- **LinkedIn**: [Linkedin](https://linkedin.com/in/amine-akacha)
 
 ---
 
