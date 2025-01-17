@@ -101,9 +101,9 @@ To set up the project locally:
 ## **📫 Get in Touch**
 Feel free to reach out to me for any questions, suggestions, or collaborations! 😊
 
-- **Email**: your.email@example.com
-- **GitHub**: [yourgithubprofile](https://github.com/yourusername)
-- **LinkedIn**: [yourlinkedinprofile](https://linkedin.com/in/yourprofile)
+- **Email**: ..
+- **GitHub**: [yourgithubprofile](https://github.com/FucciUnavailable)
+- **LinkedIn**: [yourlinkedinprofile](https://linkedin.com/in/amine-akacha)
 
 ---
 
